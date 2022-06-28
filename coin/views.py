@@ -69,10 +69,8 @@ def index(request):
 
 
 def whale(request):
-    # GET https://api.whale-alert.io/v1/status?api_key=your-api-key-here
-    # url = "https://api.whale-alert.io/v1/status?"
 
-    # GET https://api.whale-alert.io/v1/transactions?api_key=your-api-key-here&min_value=10000&start=1550237797&cursor=2bc7e46-2bc7e46-5c66c0a7
+    # Usando a APi do Whale Alert Free limita a 10 consultas por minuto
     url = "https://api.whale-alert.io/v1/transactions?"
 
     # key by access to API Whale Alert
@@ -81,7 +79,7 @@ def whale(request):
     whalealert = requests.get(url + api_key)
     alerts = whalealert.json()
 
-    # Cotação do Dolar na API economia awesomeapi
+    # Cotação do Dolar na API Economia Awesomeapi
     urlmoeda = "https://economia.awesomeapi.com.br/last/USD-BRL"
     acesso = requests.get(urlmoeda)
     cotacao = acesso.json()

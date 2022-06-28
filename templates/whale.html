@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
@@ -5,7 +7,8 @@
   <meta charset="utf-8">
   <title>Crypto Coin v:1.0 - Whale</title>
   <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> -->
+  <link rel="stylesheet" href="/static/css/bootstrap.css">
 
   <!-- jQuery library -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -16,10 +19,8 @@
 </head>
 
 <body>
-  <nav class="row" style="background: rgb(38, 157, 204); color: white;">
-    <div align="center"><h1 class="col-md-3 text-center">Crypto Coin - Whale Alert</h1></div>
-  </nav>
-  <br />
+  {% include 'navbar.html'%}
+
   <br />
   <center class="row">
     <form action="" method="post" class="col-md-6 col-md-offset-3">
@@ -52,8 +53,7 @@
           <td class="text-info">{{transaction.amount_brl}}</td>
           <!--<td class="text-info col-md-1">{{transaction.hash}}</td>-->
           <td class="text-info">{{transaction.from.owner}}|{{transaction.from.address}}</td>
-          <td class="text-info">{{transaction.from.owner}}|{{transaction.to.address}}</td>
-                  
+          <td class="text-info">{{transaction.from.owner}}|{{transaction.to.address}}</td>          
         </tr>
         {% endfor%}
       </table>
