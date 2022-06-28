@@ -49,8 +49,8 @@
           <td><i href="'{{moeda.logo}}'"></i> {{moeda.symbol}}</td>
           <td class="text-info">{% if moeda.percent_change_1h > 0 %}<i class="glyphicon glyphicon-arrow-up text-success"> {% else %} <i class="glyphicon glyphicon-arrow-down text-danger"> {% endif %}</i>{{moeda.price_usd}}</td>
           <td class="text-info">{{moeda.price_br}}</td>
-          <td class="text-info">{{moeda.percent_change_1h}}</td>
-          <td class="text-info">{{moeda.percent_change_24h}}</td>
+          <td class="text-info">{% if moeda.percent_change_1h > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{moeda.percent_change_1h}}</b></td>
+          <td class="text-info">{% if moeda.percent_change_24h > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{moeda.percent_change_24h}}</b></td>
         </tr>
         {% endfor %}
       </table>
