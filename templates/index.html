@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Crypto Coin v:1.0</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+  <nav class="row" style="background: rgb(38, 157, 204); color: white;">
+    <div align="center"><h1 class="col-md-3 text-center">Crypto Coin</h1></div>
+  </nav>
+  <br />
+  <br />
+  <center class="row">
+    <form action="" method="post" class="col-md-6 col-md-offset-3">
+      {% csrf_token %}
+      <div class="input-group">
+        <input type="text" class="form-control" name="city" placeholder="Search">
+        <div class="input-group-btn">
+          <button class="btn btn-default" type="submit">
+            <i class="glyphicon glyphicon-search"></i>
+          </button>
+        </div>
+        <form>
+  </center>
+  <div class="row">  
+    <div class="col-md-6 col-md-offset-3">
+      <hr>  
+      <p class="text-info">Cotação atual: {{hoje}} do {{cotacao.USDBRL.name}}, é de R$<a class="text-danger">{{valorBRL}}</a></p>   
+      <hr>
+      <table class="table bg-info">
+        <tr class="table-bordered th h4 text-center">
+          <th >RANK</th><th>NOME</th><th>SIMBOLO</th><th>MOEDA U$</th><th>MOEDA R$</th>
+        </tr>      
+        {% for moeda in coin %}
+        <tr class="table-bordered td text-center">
+          <td class="text-danger">{{moeda.rank}}</td>
+          <td>{{moeda.name}}</td>
+          <td>{{moeda.symbol}}</td>
+          <td class="text-info">{{moeda.quote}}</td>
+          <td class="text-success">{{moeda.quotebr}}</td>
+        </tr>
+        {% endfor%}
+      </table>
+      <hr>     
+    </div>
+  </div>
+</body>
+
+</html>
