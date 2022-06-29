@@ -34,21 +34,21 @@
         <form>
   </center>
   <div class="row">  
-    <div class="col-md-6 col-md-offset-3">
+    <div class="col-md-8 col-md-offset-1">
       <hr>  
-      <p class="text-info">Cotação atual: {{hoje}} do {{cotacao.USDBRL.name}}, é de R$<a class="text-danger">{{valorBRL}}</a></p>   
+      <p class="text-info">Cotação atual: {{hoje}} do {{cotacao.USDBRL.name}}, é de R$ <a class="text-danger">{{valorBRL}}</a></p>   
       <hr>
-      <table class="table bg-gray-100">
-        <tr class="table-bordered th h4 text-center">
+      <table class="table bg-gray-100 " style=" font-size: 12px;">
+        <tr class="table-bordered th text-center">
           <th>Data</th><th>Rede</th><th>Moeda</th><th>Valor Crypto</th><th>Valor Dolar</th><th>Valor Real</th><th>De</th><th>Para</th>
         </tr>      
         {% for transaction in transactions %}
         <tr class="table-bordered td text-center ">
           <td class="text-info">{{transaction.time}}</td>
           <td class="text-danger">{{transaction.name}}</td>
-          <td class="text-success">{{transaction.symbol}}</td>
-          <td class="text-info">{{transaction.amount}}</td>
-          <td class="text-info">{{transaction.amount_usd}}</td>
+          <td class="text-success"><img src="/static/images/color/{{transaction.symbol}}.png" alt="" width="32" height="32">{{transaction.symbol}}</td>
+          <td class="text">{{transaction.amount}}</td>
+          <td class="text">{{transaction.amount_usd}}</td>
           <td class="text-info">{{transaction.amount_brl}}</td>
           <!--<td class="text-info col-md-1">{{transaction.hash}}</td>-->
           <td class="text-info">{{transaction.from.owner}}|{{transaction.from.address}}</td>

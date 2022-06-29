@@ -86,6 +86,7 @@ def index(request):
 
         coin.append(
             {
+                "id": content["id"],
                 "rank": content["rank"],
                 "name": content["name"],
                 "symbol": content["symbol"],
@@ -95,7 +96,7 @@ def index(request):
                 "percent_change_24h": round(float(content["percent_change_24h"]), 4),
                 "logo": "https://cryptoicons.org/api/color/"
                 + content["symbol"].lower()
-                + "/16",
+                + "/32",
             }
         )
 

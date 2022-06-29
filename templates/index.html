@@ -15,7 +15,7 @@
 
   <!-- Latest compiled JavaScript -->
   <script src="/static/js/bootstrap.min.js"></script>
-
+  
 </head>
 
 <body>
@@ -36,7 +36,7 @@
   <div class="row">  
     <div class="col-md-6 col-md-offset-3">
       <hr>  
-      <p class="text-info">Cotação atual: {{hoje}} do {{cotacao.USDBRL.name}}, é de R$<a class="text-danger">{{valorbrl}}</a></p>   
+      <p class="text-info">Cotação atual: {{hoje}} do {{cotacao.USDBRL.name}}, é de R$ <a class="text-danger">{{valorbrl}}</a></p>   
       <hr>
       <table class="table bg-gray-100">
         <tr class="table-bordered th text-center">
@@ -44,9 +44,9 @@
         </tr>      
         {% for moeda in coin %}
         <tr class="table-bordered td text-center">
-          <td class="text-danger">{{moeda.rank}}</td>
-          <td>{{moeda.name}}</td>
-          <td><i href="'{{moeda.logo}}'"></i> {{moeda.symbol}}</td>
+          <td class="text-danger">{{moeda.rank}} | {{moeda.id}}</td>
+          <td class="text-left">{{moeda.name}}</td>
+          <td align="left"><img src="/static/images/color/{{moeda.symbol}}.png" alt="" width="32" height="32"> {{moeda.symbol}}</td>
           <td class="text-info">{% if moeda.percent_change_1h > 0 %}<i class="glyphicon glyphicon-arrow-up text-success"> {% else %} <i class="glyphicon glyphicon-arrow-down text-danger"> {% endif %}</i>{{moeda.price_usd}}</td>
           <td class="text-info">{{moeda.price_br}}</td>
           <td class="text-info">{% if moeda.percent_change_1h > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{moeda.percent_change_1h}}</b></td>
@@ -55,6 +55,7 @@
         {% endfor %}
       </table>
       <hr>
+      {{coins}}
     </div>
   </div>
 </body>
