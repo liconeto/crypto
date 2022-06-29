@@ -10,64 +10,6 @@ import locale
 # Create your views here.
 
 
-def index(request):
-
-    # Api de teste.
-    url = "https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
-
-    # Api de produção.
-    # url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
-
-    parameters = {"start": "1", "limit": "5000", "convert": "USD"}
-    headers = {
-        "Accepts": "application/json",
-        "X-CMC_PRO_API_KEY": "b54bcf4d-1bca-4e8e-9a24-22ff2c3d462c",
-        # Key de produção
-        # "X-CMC_PRO_API_KEY": "73224774-775b-4677-8eca-0eb4e2a07f17",
-    }
-
-    session = Session()
-    session.headers.update(headers)
-
-    response = session.get(url, params=parameters)
-    data = json.loads(response.text)
-
-    hoje = datetime.strftime(parser.parse(data["status"]["timestamp"]), "%d/%m/%Y")
-
-    # Cotação do Dolar na API economia awesomeapi
-    urlmoeda = "https://economia.awesomeapi.com.br/last/USD-BRL"
-    acesso = requests.get(urlmoeda)
-    cotacao = acesso.json()
-    valorBRL = float(cotacao["USDBRL"]["bid"])
-
-    coin = []
-    for content in data["data"]:
-
-        coin.append(
-            {
-                "rank": content["cmc_rank"],
-                "name": content["name"],
-                "symbol": content["symbol"],
-                "quote": locale.format("%.04f", content["quote"]["USD"]["price"]),
-                "quotebr": locale.format(
-                    "%.04f", content["quote"]["USD"]["price"] * valorBRL
-                ),
-            }
-        )
-
-    return render(
-        request,
-        "index.html",
-        {
-            "data": data,
-            "cotacao": cotacao,
-            "valorBRL": valorBRL,
-            "coin": coin,
-            "hoje": hoje,
-        },
-    )
-
-
 def whale(request):
 
     # Usando a APi do Whale Alert Free limita a 10 consultas por minuto
@@ -123,7 +65,7 @@ def whale(request):
     )
 
 
-def lore(request):
+def index(request):
 
     # url= https://api.coinlore.net/api/tickers/?start=100&limit=100
 
@@ -158,5 +100,5 @@ def lore(request):
         )
 
     return render(
-        request, "coinlore.html", {"coin": coin, "valorbrl": valorBRL, "coins": coins}
+        request, "index.html", {"coin": coin, "valorbrl": valorBRL, "coins": coins}
     )
