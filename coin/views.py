@@ -10,7 +10,35 @@ import locale
 # Create your views here.
 
 
+def cotacao(request):
+    # Cotação do Dolar na API Economia Awesomeapi
+    urlmoeda = "https://economia.awesomeapi.com.br/last/USD-BRL"
+    acesso = requests.get(urlmoeda)
+    cotacao = acesso.json()
+    valorBRL = float(cotacao["USDBRL"]["bid"])
+
+    return valorBRL
+
+
+def moedabrl(valor):
+    valor = valor
+    locale.setlocale(locale.LC_ALL, "pt_BR.UTF-8")
+    valor = locale.currency(valor, grouping=True, symbol=None)
+
+    return valor
+
+
+def moedausd(valor):
+    valor = valor
+    locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
+    valor = locale.currency(valor, grouping=True, symbol=None)
+
+    return valor
+
+
 def whale(request):
+
+    valorBRL = cotacao(request)
 
     # Usando a APi do Whale Alert Free limita a 10 consultas por minuto
     url = "https://api.whale-alert.io/v1/transactions?"
@@ -20,12 +48,6 @@ def whale(request):
 
     whalealert = requests.get(url + api_key)
     alerts = whalealert.json()
-
-    # Cotação do Dolar na API Economia Awesomeapi
-    urlmoeda = "https://economia.awesomeapi.com.br/last/USD-BRL"
-    acesso = requests.get(urlmoeda)
-    cotacao = acesso.json()
-    valorBRL = float(cotacao["USDBRL"]["bid"])
 
     transactions = []
     for blockchain in alerts["transactions"]:
@@ -45,11 +67,9 @@ def whale(request):
                     ),
                     "%d/%m/%Y %H:%M:%S",
                 ),
-                "amount": locale.format("%.02f", blockchain["amount"]),
-                "amount_usd": locale.format("%.02f", blockchain["amount_usd"]),
-                "amount_brl": locale.format(
-                    "%.02f", blockchain["amount_usd"] * valorBRL
-                ),
+                "amount": moedausd(blockchain["amount"]),
+                "amount_usd": moedausd(blockchain["amount_usd"]),
+                "amount_brl": moedabrl(blockchain["amount_usd"] * valorBRL),
             }
         )
 
@@ -59,13 +79,14 @@ def whale(request):
         {
             "alerts": alerts,
             "transactions": transactions,
-            "cotacao": cotacao,
             "valorBRL": valorBRL,
         },
     )
 
 
 def index(request):
+
+    valorBRL = cotacao(request)
 
     # url= https://api.coinlore.net/api/tickers/?start=100&limit=100
 
@@ -74,12 +95,6 @@ def index(request):
     coinslore = coinlore.json()
 
     coins = coinslore["data"]
-
-    # Cotação do Dolar na API economia awesomeapi
-    urlmoeda = "https://economia.awesomeapi.com.br/last/USD-BRL"
-    acesso = requests.get(urlmoeda)
-    cotacao = acesso.json()
-    valorBRL = float(cotacao["USDBRL"]["bid"])
 
     coin = []
     for content in coinslore["data"]:
@@ -90,8 +105,8 @@ def index(request):
                 "rank": content["rank"],
                 "name": content["name"],
                 "symbol": content["symbol"],
-                "price_usd": round(float(content["price_usd"]), 4),
-                "price_br": round((float(content["price_usd"]) * valorBRL), 4),
+                "price_usd": moedausd(float(content["price_usd"])),
+                "price_br": moedabrl(float(content["price_usd"]) * valorBRL),
                 "percent_change_1h": round(float(content["percent_change_1h"]), 4),
                 "percent_change_24h": round(float(content["percent_change_24h"]), 4),
                 "logo": "https://cryptoicons.org/api/color/"
@@ -101,5 +116,5 @@ def index(request):
         )
 
     return render(
-        request, "index.html", {"coin": coin, "valorbrl": valorBRL, "coins": coins}
+        request, "index.html", {"coin": coin, "valorBRL": valorBRL, "coins": coins}
     )
