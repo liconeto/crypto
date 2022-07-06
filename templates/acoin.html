@@ -31,31 +31,35 @@
             <i class="glyphicon glyphicon-search"></i>
           </button>
         </div>
-    </form>
+        <form>
   </center>
   <div class="row">  
     <div class="col-md-6 col-md-offset-3">
       <hr>  
-      <p class="text-info">Cotação atual: {{hoje}} do USD/BRL, é de R$ <a class="text-danger">{{valorBRL}}</a></p>   
+      <p class="text-info">Cotação atual do USD/BRL, é de R$ <a class="text-danger">{{valorBRL}}</a></p>   
       <hr>
+      <h3>Informações da cripto : {{cripto.name}}!</h3>
       <table class="table bg-gray-100">
         <tr class="table-bordered th text-center">
           <th>RANK</th><th>NOME</th><th>SIMBOLO</th><th>MOEDA U$</th><th>MOEDA R$</th><th> % 1H </th><th> % 24H </th><th> % 7D </th>
         </tr>      
-        {% for moeda in coin %}
+        
         <tr class="table-bordered td text-center">
-          <td class="text-danger">{{moeda.rank}} </td>
-          <td class="text-left"><a name="id" href="{% url 'acoin' moeda.id %}" >{{moeda.name}}</a></td>
-          <td align="left"><a name="id" href="{% url 'acoin' moeda.id %}" ><img src="/static/images/color/{{moeda.symbol}}.png" alt="" width="32" height="32"> {{moeda.symbol}}</a></td>
-          <td class="text-info">{% if moeda.percent_change_1h > 0 %}<i class="glyphicon glyphicon-arrow-up text-success"> {% else %} <i class="glyphicon glyphicon-arrow-down text-danger"> {% endif %}</i>{{moeda.price_usd}}</td>
-          <td class="text-info">{{moeda.price_br}}</td>
-          <td class="text-info">{% if moeda.percent_change_1h > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{moeda.percent_change_1h}}</b></td>
-          <td class="text-info">{% if moeda.percent_change_24h > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{moeda.percent_change_24h}}</b></td>
-          <td class="text-info">{% if moeda.percent_change_7d > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{moeda.percent_change_7d}}</b></td>
+          <td class="text-danger">{{cripto.rank}} </td>
+          <td class="text-left">{{cripto.name}}</td>
+          <td align="left"><img src="/static/images/color/{{cripto.symbol}}.png" alt="" width="32" height="32"> {{cripto.symbol}}</td>
+          <td class="text-info">{% if cripto.percent_change_1h > 0 %}<i class="glyphicon glyphicon-arrow-up text-success"> {% else %} <i class="glyphicon glyphicon-arrow-down text-danger"> {% endif %}</i>{{cripto.price_usd}}</td>
+          <td class="text-info">{{cripto.price_br}}</td>
         </tr>
-        {% endfor %}
+        <tr>
+          <td class="text-info">{% if cripto.percent_change_1h > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{cripto.percent_change_1h}}</b></td>
+          <td class="text-info">{% if cripto.percent_change_24h > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{cripto.percent_change_24h}}</b></td>
+          <td class="text-info">{% if cripto.percent_change_7d > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{cripto.percent_change_7d}}</b></td>
+        </tr>
+        
       </table>
       <hr>
+      {{cripto}}
     </div>
   </div>
 </body>

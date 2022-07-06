@@ -88,8 +88,6 @@ def index(request):
 
     valorBRL = cotacao(request)
 
-    # url= https://api.coinlore.net/api/tickers/?start=100&limit=100
-
     url = "https://api.coinlore.net/api/tickers/?start=0&limit=100"
     coinlore = requests.get(url)
     coinslore = coinlore.json()
@@ -109,6 +107,7 @@ def index(request):
                 "price_br": moedabrl(float(content["price_usd"]) * valorBRL),
                 "percent_change_1h": round(float(content["percent_change_1h"]), 4),
                 "percent_change_24h": round(float(content["percent_change_24h"]), 4),
+                "percent_change_7d": round(float(content["percent_change_7d"]), 4),
                 "logo": "https://cryptoicons.org/api/color/"
                 + content["symbol"].lower()
                 + "/32",
@@ -118,3 +117,39 @@ def index(request):
     return render(
         request, "index.html", {"coin": coin, "valorBRL": valorBRL, "coins": coins}
     )
+
+
+def acoin(request, id):
+
+    if request.method == "GET":
+        # url para buscar moeda especifíca !
+        aCoin = "https://api.coinlore.net/api/ticker/?"
+        idT = id
+        aCoin = aCoin + "id=" + idT + ""
+        urlcoin = requests.get(aCoin)
+        aCoinJ = urlcoin.json()
+        coin = {}
+        for i in aCoinJ:
+            coin = i
+        valorBRL = cotacao(request)
+        coin = {
+            "id": coin["id"],
+            "symbol": coin["symbol"],
+            "name": coin["name"],
+            "nameid": coin["nameid"],
+            "rank": coin["rank"],
+            "price_usd": moedausd(float(coin["price_usd"])),
+            "price_br": moedabrl(float(coin["price_usd"]) * valorBRL),
+            "percent_change_1h": round(float(coin["percent_change_1h"]), 4),
+            "percent_change_24h": round(float(coin["percent_change_24h"]), 4),
+            "percent_change_7d": round(float(coin["percent_change_7d"]), 4),
+            "market_cap_usd": coin["market_cap_usd"],
+            "volume24": moedausd(float(coin["volume24"])),
+            "volume24_native": coin["volume24_native"],
+            "csupply": coin["csupply"],
+            "price_btc": coin["price_btc"],
+            "tsupply": coin["tsupply"],
+            "msupply": coin["msupply"],
+        }
+
+    return render(request, "acoin.html", {"cripto": coin, "valorBRL": valorBRL})
