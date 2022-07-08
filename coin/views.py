@@ -153,3 +153,26 @@ def acoin(request, id):
         }
 
     return render(request, "acoin.html", {"cripto": coin, "valorBRL": valorBRL})
+
+
+def gecko(request):
+
+    valorBRL = cotacao(request)
+
+    # Documentação API coingecko
+    # https://www.coingecko.com/en/api/documentation
+
+    # Dcoumentação com todas criptos listadas na coingecko
+    # https://docs.google.com/spreadsheets/d/1wTTuxXt8n9q7C4NDXqQpI3wpKu1_5bGVmP9Xz0XGSyU/edit#gid=0
+
+    list_coins = "https://api.coingecko.com/api/v3/coins/list"
+    list_response = requests.get(list_coins)
+    coins = list_response.json()
+
+    # Endpoint para moeda espeficifica
+    # https://api.coingecko.com/api/v3/coins/dogecoin
+
+    # Endpoint com 7 criptos mais negociadas nas ultimas 24 horas
+    # https://api.coingecko.com/api/v3/search/trending
+
+    return render(request, "gecko.html", {"valorBRL": valorBRL, "coins": coins})

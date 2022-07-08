@@ -1964,6 +1964,14 @@ a.text-danger:focus, a.text-danger:hover {
     color: #843534
 }
 
+.text-normally {
+    color: #0c0c0c
+}
+
+a.text-normally:focus, a.text-danger:hover {
+    color: #0d0a0a
+}
+
 .bg-primary {
     color: #fff;
     background-color: #337ab7

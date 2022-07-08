@@ -38,28 +38,56 @@
       <hr>  
       <p class="text-info">Cotação atual do USD/BRL, é de R$ <a class="text-danger">{{valorBRL}}</a></p>   
       <hr>
-      <h3>Informações da cripto : {{cripto.name}}!</h3>
-      <table class="table bg-gray-100">
-        <tr class="table-bordered th text-center">
-          <th>RANK</th><th>NOME</th><th>SIMBOLO</th><th>MOEDA U$</th><th>MOEDA R$</th><th> % 1H </th><th> % 24H </th><th> % 7D </th>
-        </tr>      
-        
-        <tr class="table-bordered td text-center">
-          <td class="text-danger">{{cripto.rank}} </td>
-          <td class="text-left">{{cripto.name}}</td>
-          <td align="left"><img src="/static/images/color/{{cripto.symbol}}.png" alt="" width="32" height="32"> {{cripto.symbol}}</td>
-          <td class="text-info">{% if cripto.percent_change_1h > 0 %}<i class="glyphicon glyphicon-arrow-up text-success"> {% else %} <i class="glyphicon glyphicon-arrow-down text-danger"> {% endif %}</i>{{cripto.price_usd}}</td>
-          <td class="text-info">{{cripto.price_br}}</td>
-        </tr>
-        <tr>
-          <td class="text-info">{% if cripto.percent_change_1h > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{cripto.percent_change_1h}}</b></td>
-          <td class="text-info">{% if cripto.percent_change_24h > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{cripto.percent_change_24h}}</b></td>
-          <td class="text-info">{% if cripto.percent_change_7d > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{cripto.percent_change_7d}}</b></td>
-        </tr>
-        
-      </table>
+      <div>
+        <h3>Informações da cripto : {{cripto.name}}</h3>
+        <p>
+          <label class="text-danger">Rank: {{cripto.rank}} </label>
+          <label class="text-left">| Nome: {{cripto.name}}</label>
+          <label class="text-left">| Logo: </label>
+          <label align="left"><img src="/static/images/color/{{cripto.symbol}}.png" alt="" width="32" height="32"> | Sigla: {{cripto.symbol}}</label>
+        </p>
+        <center>
+        <p >
+          <label >Cotação: </label>
+          <br>
+          <label class="text-info">| U$ {{cripto.price_usd}}</td>
+          <label > | </label>
+          <label class="text-info">BR$ {{cripto.price_br}} | </label>
+          <label class="text-info">BTC {{cripto.price_btc}} |</label>    
+        </p>
+        <p >
+          <label >Variação </label>
+          <table class="table bg-gray-500 table-bordered text-center">
+            <tr class="table th text-center">
+              <th> % 1 H</th><th> % 24 H</th><th> % 7 D</th>
+            </tr>
+            <tr class="table td">
+              <td>
+                {% if cripto.percent_change_1h > 0 %}<i class="glyphicon glyphicon-arrow-up text-success"> {% else %} <i class="glyphicon glyphicon-arrow-down text-danger"> {% endif %}</i>
+                <label class="text-info">{% if cripto.percent_change_1h > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{cripto.percent_change_1h}}</b></td>
+              </td>
+              <td>
+                {% if cripto.percent_change_24h > 0 %}<i class="glyphicon glyphicon-arrow-up text-success"> {% else %} <i class="glyphicon glyphicon-arrow-down text-danger"> {% endif %}</i>
+                <label class="text-info">{% if cripto.percent_change_24h > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{cripto.percent_change_24h}}</b></td>
+              </td>
+              <td>
+                {% if cripto.percent_change_7d > 0 %}<i class="glyphicon glyphicon-arrow-up text-success"> {% else %} <i class="glyphicon glyphicon-arrow-down text-danger"> {% endif %}</i>
+                <label class="text-info">{% if cripto.percent_change_7d > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{cripto.percent_change_7d}}</b></td>
+              </td>
+            </tr>
+          </table>
+        </p>
+        <p>
+          <label>Capitalização de Mercado U$: {{cripto.market_cap_usd}}</label><br>
+          <label>Volume 24 H: {{cripto.volume24}} | </label>
+          <label>Volume nativo 24 H: {{cripto.volume24_native}}</label><br>
+          <label>C Supply: {{cripto.csupply}} |</label>
+          <label>T supply: {{cripto.tsupply}} |</label>
+          <label>M supply: {{cripto.msupply}}</label>
+        </p>
+      </center>
+      </div>
       <hr>
-      {{cripto}}
     </div>
   </div>
 </body>
