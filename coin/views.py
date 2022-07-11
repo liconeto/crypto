@@ -145,7 +145,7 @@ def acoin(request, id):
             "percent_change_7d": round(float(coin["percent_change_7d"]), 4),
             "market_cap_usd": coin["market_cap_usd"],
             "volume24": moedausd(float(coin["volume24"])),
-            "volume24_native": coin["volume24_native"],
+            "volume24_native": moedausd(float(coin["volume24_native"])),
             "csupply": coin["csupply"],
             "price_btc": coin["price_btc"],
             "tsupply": coin["tsupply"],
@@ -165,9 +165,27 @@ def gecko(request):
     # Dcoumentação com todas criptos listadas na coingecko
     # https://docs.google.com/spreadsheets/d/1wTTuxXt8n9q7C4NDXqQpI3wpKu1_5bGVmP9Xz0XGSyU/edit#gid=0
 
-    list_coins = "https://api.coingecko.com/api/v3/coins/list"
+    list_coins = "https://api.coingecko.com/api/v3/search/trending"
     list_response = requests.get(list_coins)
-    coins = list_response.json()
+    trend_coins = list_response.json()
+
+    coins = []
+    for i in trend_coins["coins"]:
+        coins.append(
+            {
+                "id": i["item"]["id"],
+                "coin_id": i["item"]["coin_id"],
+                "name": i["item"]["name"],
+                "symbol": i["item"]["symbol"],
+                "market_cap_rank": i["item"]["market_cap_rank"],
+                "thumb": i["item"]["thumb"],
+                "small": i["item"]["small"],
+                "large": i["item"]["large"],
+                "slug": i["item"]["slug"],
+                "price_btc": i["item"]["price_btc"],
+                "score": int(i["item"]["score"]) + 1,
+            }
+        )
 
     # Endpoint para moeda espeficifica
     # https://api.coingecko.com/api/v3/coins/dogecoin
@@ -175,4 +193,28 @@ def gecko(request):
     # Endpoint com 7 criptos mais negociadas nas ultimas 24 horas
     # https://api.coingecko.com/api/v3/search/trending
 
-    return render(request, "gecko.html", {"valorBRL": valorBRL, "coins": coins})
+    trend_coins = list_response.json()
+    return render(
+        request,
+        "gecko.html",
+        {"valorBRL": valorBRL, "coins": coins, "trend_coins": trend_coins},
+    )
+
+
+def gcoin(request, id):
+
+    valorBRL = cotacao(request)
+
+    url = "https://api.coingecko.com/api/v3/coins/"
+    id = str.lower(id)
+    coin_request = requests.get(url + id)
+    coin_json = coin_request.json()
+
+    print(type(id))
+    print(url + id)
+
+    return render(
+        request,
+        "gcoin.html",
+        {"cripto": coin_json, "valorBRL": valorBRL},
+    )

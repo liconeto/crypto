@@ -1,0 +1,105 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Crypto Coin v:1.0 - G_coin</title>
+  <!-- Latest compiled and minified CSS -->
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> -->
+  <link rel="stylesheet" href="/static/css/navbar.css">
+
+  <!-- jQuery library -->
+  <script src="/static/jquery/jquery.js"></script>
+
+  <!-- Latest compiled JavaScript -->
+  <script src="/static/js/bootstrap.min.js"></script>
+  
+</head>
+
+<body>
+  {% include 'navbar.html'%}
+  <br />
+  <center class="row">
+    <form action="acoin" method="post" class="col-md-6 col-md-offset-3">
+      {% csrf_token %}
+      <div class="input-group">
+        <input type="text" class="form-control" name="acoin" placeholder="Search">
+        <div class="input-group-btn">
+          <button class="btn btn-default" type="submit">
+            <i class="glyphicon glyphicon-search"></i>
+          </button>
+        </div>
+        <form>
+  </center>
+  <div class="row">  
+    <div class="col-md-6 col-md-offset-3">
+      <hr>  
+      <p class="text-info">Cotação atual do USD/BRL, é de R$ <a class="text-danger">{{valorBRL}}</a></p>   
+      <hr>
+      <div>
+        <h3>Informações da cripto : {{cripto.name}}</h3>
+        <p>
+          <label class="text-danger">Rank: {{cripto.rank}} </label>
+          <label class="text-left">| Nome: {{cripto.name}}</label>
+          <label class="text-left">| Logo: </label>
+          <label align="left"><img src="{{cripto.image.thumb}}" alt="" width="32" height="32"> | Sigla: {{cripto.symbol}}</label>
+          <label >Home-page: </label><label class="text-link"><a href="{{cripto.links.homepage.0}}">{{cripto.links.homepage.0}}</a></label>
+        </p>
+        <right>
+          <div>
+            <label >Votação</label><br>
+            <label class="text-success">{{cripto.sentiment_votes_up_percentage}}</label>
+            <label class="text-danger">{{cripto.sentiment_votes_down_percentage}}</label>
+          </div>
+        </right>
+        <center>
+        <p >
+          <label >Cotação: </label>
+          <br>
+          <label class="text-info">| U$ {{cripto.price_usd}}</td>
+          <label > | </label>
+          <label class="text-info">BR$ {{cripto.price_br}} | </label>
+          <label class="text-info">BTC {{cripto.price_btc}} |</label>    
+        </p>
+        <p >
+          <label >Variação </label>
+          <table class="table bg-gray-500 table-bordered text-center">
+            <tr class="table th text-center">
+              <th> % 1 H</th><th> % 24 H</th><th> % 7 D</th>
+            </tr>
+            <tr class="table td">
+              <td>
+                {% if cripto.percent_change_1h > 0 %}<i class="glyphicon glyphicon-arrow-up text-success"> {% else %} <i class="glyphicon glyphicon-arrow-down text-danger"> {% endif %}</i>
+                <label class="text-info">{% if cripto.percent_change_1h > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{cripto.percent_change_1h}}</b></td>
+              </td>
+              <td>
+                {% if cripto.percent_change_24h > 0 %}<i class="glyphicon glyphicon-arrow-up text-success"> {% else %} <i class="glyphicon glyphicon-arrow-down text-danger"> {% endif %}</i>
+                <label class="text-info">{% if cripto.percent_change_24h > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{cripto.percent_change_24h}}</b></td>
+              </td>
+              <td>
+                {% if cripto.percent_change_7d > 0 %}<i class="glyphicon glyphicon-arrow-up text-success"> {% else %} <i class="glyphicon glyphicon-arrow-down text-danger"> {% endif %}</i>
+                <label class="text-info">{% if cripto.percent_change_7d > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{cripto.percent_change_7d}}</b></td>
+              </td>
+            </tr>
+          </table>
+        </p>
+        <p>
+          <label>Capitalização de Mercado U$: {{cripto.market_cap_usd}}</label><br>
+          <label>Volume 24 H: {{cripto.volume24}} | </label>
+          <label>Volume nativo 24 H: {{cripto.volume24_native}}</label><br>
+          <label>C Supply: {{cripto.csupply}} |</label>
+          <label>T supply: {{cripto.tsupply}} |</label>
+          <label>M supply: {{cripto.msupply}}</label>
+        </p>
+        <p><label >{{cripto.description.en}}</labelme></p>
+      </center>
+      </div>
+      <hr>
+      {{cripto}}
+    </div>
+  </div>
+</body>
+
+</html>

@@ -38,20 +38,24 @@
       <hr>  
       <p class="text-info">Cotação atual: {{hoje}} do USD/BRL, é de R$ <a class="text-danger">{{valorBRL}}</a></p>   
       <hr>
+      <h4 class="h3 text-center text-success" >As 7 moedas em tendência! </h4>
       <table class="table bg-gray-100">
         <tr class="table-bordered th text-center">
-          <th>ID</th><th>SIMBOLO</th><th>NOME</th>
+          <th>NEGOCIAÇÃO</th><th>RANK MERCADO</th><th>SIMBOLO</th><th>NOME</th><th>Preço BTC</th>
         </tr>      
         {% for moeda in coins %}
         <tr class="table-bordered td text-center">
-          <td class="text-danger">{{moeda.id}} </td>
-          <td class="text-info">{{moeda.symbol}}</td>
+          <td class="text">{{moeda.score}}</td>
+          <td class="text-danger">{{moeda.market_cap_rank}} </td>
+          <td class="text-info"><a href="{% url 'gcoin' moeda.id %}"><img src="{{moeda.thumb}}"> | {{moeda.symbol}} </a></td>
           <td class="text-info">{{moeda.name}}</td>
+          <td class="text-info">{{moeda.price_btc}}</td>
+          
         </tr>
         {% endfor %}
       </table>
       <hr>
-      {{coins}}    
+      {{trend_coins}}    
     </div>
   </div>
 </body>
