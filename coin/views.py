@@ -1,4 +1,6 @@
 from datetime import datetime
+from string import digits
+from time import sleep
 from dateutil import parser
 from django.shortcuts import render
 import json
@@ -6,6 +8,8 @@ from requests import Request, Session
 import requests
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import locale
+from . import viewsChart
+
 
 # Create your views here.
 
@@ -88,71 +92,51 @@ def index(request):
 
     valorBRL = cotacao(request)
 
-    url = "https://api.coinlore.net/api/tickers/?start=0&limit=100"
-    coinlore = requests.get(url)
-    coinslore = coinlore.json()
+    global junta
+    junta = []
 
-    coins = coinslore["data"]
-
-    coin = []
-    for content in coinslore["data"]:
-
-        coin.append(
-            {
-                "id": content["id"],
-                "rank": content["rank"],
-                "name": content["name"],
-                "symbol": content["symbol"],
-                "price_usd": moedausd(float(content["price_usd"])),
-                "price_br": moedabrl(float(content["price_usd"]) * valorBRL),
-                "percent_change_1h": round(float(content["percent_change_1h"]), 4),
-                "percent_change_24h": round(float(content["percent_change_24h"]), 4),
-                "percent_change_7d": round(float(content["percent_change_7d"]), 4),
-                "logo": "https://cryptoicons.org/api/color/"
-                + content["symbol"].lower()
-                + "/32",
-            }
+    for i in range(1):
+        num = i + 1
+        url = (
+            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=200&page="
+            + str(num)
+            + "&sparkline=true&price_change_percentage=1h%2C24h%2C7d%2C30%2C"
         )
+        coingecko = requests.get(url)
+        coinsgecko = coingecko.json()
+
+        # coins = coinsgecko["data"]
+
+        coins = []
+        for i in coinsgecko:
+            coins.append(
+                {
+                    "id": i["id"],
+                    "name": i["name"],
+                    "market_cap_rank": i["market_cap_rank"],
+                    "image": i["image"],
+                    "symbol": i["symbol"],
+                    "current_price": i["current_price"],
+                    "price_br": moedabrl(i["current_price"] * valorBRL),
+                    "price_change_percentage_1h_in_currency": i[
+                        "price_change_percentage_1h_in_currency"
+                    ],
+                    "price_change_percentage_24h_in_currency": i[
+                        "price_change_percentage_24h_in_currency"
+                    ],
+                    "price_change_percentage_7d_in_currency": i[
+                        "price_change_percentage_7d_in_currency"
+                    ],
+                    "sparkline_in_7d": i["sparkline_in_7d"],
+                }
+            )
+        junta += coins
 
     return render(
-        request, "index.html", {"coin": coin, "valorBRL": valorBRL, "coins": coins}
+        request,
+        "index.html",
+        {"valorBRL": valorBRL, "coinsgecko": coinsgecko, "coins": junta},
     )
-
-
-def acoin(request, id):
-
-    if request.method == "GET":
-        # url para buscar moeda especifíca !
-        aCoin = "https://api.coinlore.net/api/ticker/?"
-        idT = id
-        aCoin = aCoin + "id=" + idT + ""
-        urlcoin = requests.get(aCoin)
-        aCoinJ = urlcoin.json()
-        coin = {}
-        for i in aCoinJ:
-            coin = i
-        valorBRL = cotacao(request)
-        coin = {
-            "id": coin["id"],
-            "symbol": coin["symbol"],
-            "name": coin["name"],
-            "nameid": coin["nameid"],
-            "rank": coin["rank"],
-            "price_usd": moedausd(float(coin["price_usd"])),
-            "price_br": moedabrl(float(coin["price_usd"]) * valorBRL),
-            "percent_change_1h": round(float(coin["percent_change_1h"]), 4),
-            "percent_change_24h": round(float(coin["percent_change_24h"]), 4),
-            "percent_change_7d": round(float(coin["percent_change_7d"]), 4),
-            "market_cap_usd": coin["market_cap_usd"],
-            "volume24": moedausd(float(coin["volume24"])),
-            "volume24_native": moedausd(float(coin["volume24_native"])),
-            "csupply": coin["csupply"],
-            "price_btc": coin["price_btc"],
-            "tsupply": coin["tsupply"],
-            "msupply": coin["msupply"],
-        }
-
-    return render(request, "acoin.html", {"cripto": coin, "valorBRL": valorBRL})
 
 
 def gecko(request):
@@ -162,7 +146,7 @@ def gecko(request):
     # Documentação API coingecko
     # https://www.coingecko.com/en/api/documentation
 
-    # Dcoumentação com todas criptos listadas na coingecko
+    # Doumentação com todas criptos listadas na coingecko
     # https://docs.google.com/spreadsheets/d/1wTTuxXt8n9q7C4NDXqQpI3wpKu1_5bGVmP9Xz0XGSyU/edit#gid=0
 
     list_coins = "https://api.coingecko.com/api/v3/search/trending"
@@ -217,4 +201,15 @@ def gcoin(request, id):
         request,
         "gcoin.html",
         {"cripto": coin_json, "valorBRL": valorBRL},
+    )
+
+
+def geraChart(request, sparkline):
+
+    spark = sparkline
+
+    return render(
+        request,
+        "geraChart.html",
+        {"sparkline": spark},
     )

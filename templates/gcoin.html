@@ -41,7 +41,7 @@
       <div>
         <h3>Informações da cripto : {{cripto.name}}</h3>
         <p>
-          <label class="text-danger">Rank: {{cripto.rank}} </label>
+          <label class="text-danger">Rank: {{cripto.market_cap_rank}} </label>
           <label class="text-left">| Nome: {{cripto.name}}</label>
           <label class="text-left">| Logo: </label>
           <label align="left"><img src="{{cripto.image.thumb}}" alt="" width="32" height="32"> | Sigla: {{cripto.symbol}}</label>
@@ -58,29 +58,75 @@
         <p >
           <label >Cotação: </label>
           <br>
-          <label class="text-info">| U$ {{cripto.price_usd}}</td>
+          <label class="text-info">| U$ {{cripto.market_data.current_price.usd}}</td>
           <label > | </label>
-          <label class="text-info">BR$ {{cripto.price_br}} | </label>
-          <label class="text-info">BTC {{cripto.price_btc}} |</label>    
+          <label class="text-info">BR$ {{cripto.market_data.current_price.brl}} | </label>
+          <label class="text-info">BTC {{cripto.market_data.current_price.btc}} |</label>    
+        </p>
+        <p>
+          <label >Mercado em 24 horas</label>
+          <table class="table bg-gray-500 table-bordered text-center">
+            <tr class="table th text-center">
+              <th> U$ </th><th> R$ </th><th> BTC </th>
+            </tr>
+            <tr class="table td">
+              <td>
+                <i class="glyphicon glyphicon-arrow-up text-success"><b>{{cripto.market_data.high_24h.usd}}</b></i>
+              </td>
+              <td>
+                <i class="glyphicon glyphicon-arrow-up text-success"><b>{{cripto.market_data.high_24h.brl}}</b></i>
+              </td>
+              <td>
+                <i class="glyphicon glyphicon-arrow-up text-success"><b>{{cripto.market_data.high_24h.btc}}</b></i>
+              </td>
+            </tr>
+            <tr class="table td">
+              <td>
+                <i class="glyphicon glyphicon-arrow-down text-danger"><b>{{cripto.market_data.low_24h.usd}}</b></i>
+              </td>
+              <td>
+                <i class="glyphicon glyphicon-arrow-down text-danger"><b>{{cripto.market_data.low_24h.brl}}</b></i>
+              </td>
+              <td>
+                <i class="glyphicon glyphicon-arrow-down text-danger"><b>{{cripto.market_data.low_24h.btc}}</b></i>
+              </td>
+            </tr>
+          </table>
         </p>
         <p >
           <label >Variação </label>
           <table class="table bg-gray-500 table-bordered text-center">
             <tr class="table th text-center">
-              <th> % 1 H</th><th> % 24 H</th><th> % 7 D</th>
+              <th> % 24 H</th><th> % 7 D</th><th> % 14 D</th><th> % 30 D</th><th> % 60 D</th><th> % 200 D</th><th> % 1 Y</th>
             </tr>
             <tr class="table td">
               <td>
-                {% if cripto.percent_change_1h > 0 %}<i class="glyphicon glyphicon-arrow-up text-success"> {% else %} <i class="glyphicon glyphicon-arrow-down text-danger"> {% endif %}</i>
-                <label class="text-info">{% if cripto.percent_change_1h > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{cripto.percent_change_1h}}</b></td>
+                {% if cripto.market_data.price_change_percentage_24h > 0 %}<i class="glyphicon glyphicon-arrow-up text-success"> {% else %} <i class="glyphicon glyphicon-arrow-down text-danger"> {% endif %}</i>
+                <label class="text-info">{% if cripto.market_data.price_change_percentage_24h > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{cripto.market_data.price_change_percentage_24h}}</b></td>
               </td>
               <td>
-                {% if cripto.percent_change_24h > 0 %}<i class="glyphicon glyphicon-arrow-up text-success"> {% else %} <i class="glyphicon glyphicon-arrow-down text-danger"> {% endif %}</i>
-                <label class="text-info">{% if cripto.percent_change_24h > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{cripto.percent_change_24h}}</b></td>
+                {% if cripto.market_data.price_change_percentage_7d > 0 %}<i class="glyphicon glyphicon-arrow-up text-success"> {% else %} <i class="glyphicon glyphicon-arrow-down text-danger"> {% endif %}</i>
+                <label class="text-info">{% if cripto.market_data.price_change_percentage_7d > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{cripto.market_data.price_change_percentage_7d}}</b></td>
               </td>
               <td>
-                {% if cripto.percent_change_7d > 0 %}<i class="glyphicon glyphicon-arrow-up text-success"> {% else %} <i class="glyphicon glyphicon-arrow-down text-danger"> {% endif %}</i>
-                <label class="text-info">{% if cripto.percent_change_7d > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{cripto.percent_change_7d}}</b></td>
+                {% if cripto.market_data.price_change_percentage_14d > 0 %}<i class="glyphicon glyphicon-arrow-up text-success"> {% else %} <i class="glyphicon glyphicon-arrow-down text-danger"> {% endif %}</i>
+                <label class="text-info">{% if cripto.market_data.price_change_percentage_14d > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{cripto.market_data.price_change_percentage_14d}}</b></td>
+              </td>
+              <td>
+                {% if cripto.market_data.price_change_percentage_30d > 0 %}<i class="glyphicon glyphicon-arrow-up text-success"> {% else %} <i class="glyphicon glyphicon-arrow-down text-danger"> {% endif %}</i>
+                <label class="text-info">{% if cripto.market_data.price_change_percentage_30d > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{cripto.market_data.price_change_percentage_30d}}</b></td>
+              </td>
+              <td>
+                {% if cripto.market_data.price_change_percentage_60d > 0 %}<i class="glyphicon glyphicon-arrow-up text-success"> {% else %} <i class="glyphicon glyphicon-arrow-down text-danger"> {% endif %}</i>
+                <label class="text-info">{% if cripto.market_data.price_change_percentage_60d > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{cripto.market_data.price_change_percentage_60d}}</b></td>
+              </td>
+              <td>
+                {% if cripto.market_data.price_change_percentage_200d > 0 %}<i class="glyphicon glyphicon-arrow-up text-success"> {% else %} <i class="glyphicon glyphicon-arrow-down text-danger"> {% endif %}</i>
+                <label class="text-info">{% if cripto.market_data.price_change_percentage_200d > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{cripto.market_data.price_change_percentage_200d}}</b></td>
+              </td>
+              <td>
+                {% if cripto.market_data.price_change_percentage_1y > 0 %}<i class="glyphicon glyphicon-arrow-up text-success"> {% else %} <i class="glyphicon glyphicon-arrow-down text-danger"> {% endif %}</i>
+                <label class="text-info">{% if cripto.market_data.price_change_percentage_1y > 0 %}<b class="text-success"> {% else %}<b class="text-danger">{% endif %}{{cripto.market_data.price_change_percentage_1y}}</b></td>
               </td>
             </tr>
           </table>
